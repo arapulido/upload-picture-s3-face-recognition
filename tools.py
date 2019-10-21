@@ -1,11 +1,12 @@
 import boto3
+import os
 import logging
 from logging.handlers import RotatingFileHandler
 from logging import Formatter
 
 logger = logging.getLogger(__name__)
 
-file_handler = RotatingFileHandler('/opt/python/current/app/face_recognition.log', maxBytes=10000, backupCount=1)
+file_handler = RotatingFileHandler(os.environ['APP_LOGS'] + 'face_recognition.log', maxBytes=10000, backupCount=1)
 file_handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
 logger.addHandler(file_handler)
 logger.setLevel(logging.DEBUG)

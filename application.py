@@ -1,6 +1,6 @@
 # IMPORTS
 from ddtrace import patch_all, config
-patch_all(flask=True)
+patch_all(flask=True, logging=True)
 config.flask['service_name'] = 'face_recognition_app'
 
 from flask import Flask, render_template, request
@@ -19,8 +19,11 @@ application = Flask(__name__, instance_relative_config=True)
 application.config.from_object(os.environ['APP_SETTINGS'])
 
 # Logger
-file_handler = RotatingFileHandler('/opt/python/current/app/face_recognition.log', maxBytes=10000, backupCount=1)
-file_handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
+file_handler = RotatingFileHandler(os.environ['APP_LOGS'] + 'face_recognition.log', maxBytes=10000, backupCount=1)
+FORMAT = ('%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d] '
+          '[dd.trace_id=%(dd.trace_id)s dd.span_id=%(dd.span_id)s] '
+          '- %(message)s')
+file_handler.setFormatter(Formatter(FORMAT))
 application.logger.addHandler(file_handler)
 application.logger.setLevel(logging.DEBUG)
 
