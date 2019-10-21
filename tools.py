@@ -1,4 +1,5 @@
 import boto3
+import logging
 
 def upload_file_to_s3(file, bucket_name, aws_access_key_id, aws_secret_access_key, acl="public-read"):
 
@@ -20,7 +21,8 @@ def upload_file_to_s3(file, bucket_name, aws_access_key_id, aws_secret_access_ke
         )
 
     except Exception as e:
-        print("Something Happened: ", e)
-        return e
+        logging.error("Error uploading to S3: ", e)
+        return False
 
-    return "{}{}".format(bucket_name, file.filename)
+    logging.info("Uploaded %s file to %s bucket", file.filename, bucket_name)
+    return True

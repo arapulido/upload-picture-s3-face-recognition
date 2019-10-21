@@ -8,11 +8,20 @@ from werkzeug.utils import secure_filename
 import json
 import os
 import requests
+import logging
+from logging.handlers import RotatingFileHandler
+from logging import Formatter
 
 # CONFIG
 application = Flask(__name__, instance_relative_config=True)
 application.config.from_object(os.environ['APP_SETTINGS'])
 
+# Logger
+handler = RotatingFileHandler('face_recognition.log', maxBytes=10000, backupCount=1)
+handler.setLevel(logging.INFO)
+handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
+application.logger.setLevel(logging.INFO)
+application.logger.addHandler(handler)
 
 from tools import upload_file_to_s3
 
@@ -51,7 +60,10 @@ def index():
             "userId": user_name} 
 
             file.filename = secure_filename(file.filename)
-            output = upload_file_to_s3(file, application.config['S3_BUCKET'], application.config['S3_KEY'], application.config['S3_SECRET'])
+            upload_success = upload_file_to_s3(file, application.config['S3_BUCKET'], application.config['S3_KEY'], application.config['S3_SECRET'])
+
+            if upload_success != True:
+                return "Error uploading to S3"
 
             return requests.post(application.config['FACE_DETECTION_ENDPOINT'],
                 data=json.dumps(data)).content
