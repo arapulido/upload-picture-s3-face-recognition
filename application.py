@@ -19,7 +19,7 @@ application = Flask(__name__, instance_relative_config=True)
 application.config.from_object(os.environ['APP_SETTINGS'])
 
 # Logger
-file_handler = RotatingFileHandler('/var/log/face_recognition.log', maxBytes=10000, backupCount=1)
+file_handler = RotatingFileHandler('/opt/python/current/app/face_recognition.log', maxBytes=10000, backupCount=1)
 file_handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
 application.logger.addHandler(file_handler)
 application.logger.setLevel(logging.DEBUG)
