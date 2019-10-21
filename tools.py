@@ -1,6 +1,3 @@
-from ddtrace import patch_all
-patch_all()
-
 import boto3
 
 def upload_file_to_s3(file, bucket_name, aws_access_key_id, aws_secret_access_key, acl="public-read"):

@@ -13,8 +13,6 @@ import requests
 application = Flask(__name__, instance_relative_config=True)
 application.config.from_object(os.environ['APP_SETTINGS'])
 
-print(application.config)
-
 
 from tools import upload_file_to_s3
 
@@ -53,7 +51,7 @@ def index():
             "userId": user_name} 
 
             file.filename = secure_filename(file.filename)
-            output = upload_file_to_s3(file, application.config['S3_KEY'], application.config['S3_SECRET'], application.config["S3_BUCKET"])
+            output = upload_file_to_s3(file, application.config['S3_BUCKET'], application.config['S3_KEY'], application.config['S3_SECRET'])
 
             return requests.post(application.config['FACE_DETECTION_ENDPOINT'],
                 data=json.dumps(data)).content
