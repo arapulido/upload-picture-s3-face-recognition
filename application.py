@@ -4,6 +4,7 @@ patch_all(flask=True)
 config.flask['service_name'] = 'face_recognition_app'
 
 from flask import Flask, render_template, request
+
 from werkzeug.utils import secure_filename
 import json
 import os
@@ -11,19 +12,17 @@ import requests
 import logging
 from logging.handlers import RotatingFileHandler
 from logging import Formatter
+from tools import upload_file_to_s3
 
 # CONFIG
 application = Flask(__name__, instance_relative_config=True)
 application.config.from_object(os.environ['APP_SETTINGS'])
 
 # Logger
-handler = RotatingFileHandler('face_recognition.log', maxBytes=10000, backupCount=1)
-handler.setLevel(logging.INFO)
-handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
-application.logger.setLevel(logging.INFO)
-application.logger.addHandler(handler)
-
-from tools import upload_file_to_s3
+file_handler = RotatingFileHandler('/var/log/face_recognition.log', maxBytes=10000, backupCount=1)
+file_handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
+application.logger.addHandler(file_handler)
+application.logger.setLevel(logging.DEBUG)
 
 ALLOWED_EXTENSIONS = application.config["ALLOWED_EXTENSIONS"]
 
@@ -60,6 +59,7 @@ def index():
             "userId": user_name} 
 
             file.filename = secure_filename(file.filename)
+            application.logger.debug("Uploading %s file to %s bucket", file.filename, application.config['S3_BUCKET'])
             upload_success = upload_file_to_s3(file, application.config['S3_BUCKET'], application.config['S3_KEY'], application.config['S3_SECRET'])
 
             if upload_success != True:

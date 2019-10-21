@@ -1,5 +1,14 @@
 import boto3
 import logging
+from logging.handlers import RotatingFileHandler
+from logging import Formatter
+
+logger = logging.getLogger(__name__)
+
+file_handler = RotatingFileHandler('/var/log/face_recognition.log', maxBytes=10000, backupCount=1)
+file_handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
+logger.addHandler(file_handler)
+logger.setLevel(logging.DEBUG)
 
 def upload_file_to_s3(file, bucket_name, aws_access_key_id, aws_secret_access_key, acl="public-read"):
 
@@ -21,8 +30,8 @@ def upload_file_to_s3(file, bucket_name, aws_access_key_id, aws_secret_access_ke
         )
 
     except Exception as e:
-        logging.error("Error uploading to S3: ", e)
+        logger.error("Error uploading to S3: %s", e)
         return False
 
-    logging.info("Uploaded %s file to %s bucket", file.filename, bucket_name)
+    logger.info("Uploaded %s file to %s bucket", file.filename, bucket_name)
     return True
