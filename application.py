@@ -62,10 +62,11 @@ def index():
             "userId": user_name} 
 
             file.filename = secure_filename(file.filename)
-            application.logger.debug("Uploading %s file to %s bucket", file.filename, application.config['S3_BUCKET'])
+            application.logger.info("Uploading %s file to %s bucket", file.filename, application.config['S3_BUCKET'])
             upload_success = upload_file_to_s3(file, application.config['S3_BUCKET'], application.config['S3_KEY'], application.config['S3_SECRET'])
 
             if upload_success != True:
+                application.logger.error("Error uploading %s file to %s bucket", file.filename, application.config['S3_BUCKET'])
                 return "Error uploading to S3"
 
             return requests.post(application.config['FACE_DETECTION_ENDPOINT'],
