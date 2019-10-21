@@ -1,6 +1,6 @@
 # IMPORTS
 from ddtrace import patch_all, config
-patch_all(flask=True, logging=True)
+patch_all(logging=True)
 config.flask['service_name'] = 'face_recognition_app'
 
 from flask import Flask, render_template, request
