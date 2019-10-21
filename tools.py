@@ -7,7 +7,9 @@ from logging import Formatter
 logger = logging.getLogger(__name__)
 
 file_handler = RotatingFileHandler(os.environ['APP_LOGS'] + 'face_recognition.log', maxBytes=10000, backupCount=1)
-file_handler.setFormatter(Formatter('[%(levelname)s][%(asctime)s] %(message)s'))
+FORMAT = ('%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d] '
+          '- %(message)s')
+file_handler.setFormatter(Formatter(FORMAT))
 logger.addHandler(file_handler)
 logger.setLevel(logging.DEBUG)
 
