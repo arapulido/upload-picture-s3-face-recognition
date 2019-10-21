@@ -13,6 +13,8 @@ import requests
 application = Flask(__name__, instance_relative_config=True)
 application.config.from_object(os.environ['APP_SETTINGS'])
 
+print(application.config)
+
 
 from tools import upload_file_to_s3
 
