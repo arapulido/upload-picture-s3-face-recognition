@@ -4,6 +4,7 @@ patch_all(logging=True)
 config.flask['service_name'] = 'face_recognition_app'
 
 from flask import Flask, render_template, request
+from flask_bootstrap import Bootstrap
 
 from werkzeug.utils import secure_filename
 import json
@@ -14,8 +15,10 @@ from logging.handlers import RotatingFileHandler
 from logging import Formatter
 from tools import upload_file_to_s3
 
-# CONFIG
 application = Flask(__name__, instance_relative_config=True)
+Bootstrap(application)
+
+# CONFIG
 application.config.from_object(os.environ['APP_SETTINGS'])
 
 # Logger
