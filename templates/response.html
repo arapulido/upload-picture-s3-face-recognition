@@ -1,0 +1,49 @@
+{% extends "bootstrap/base.html" %}
+{% block title %}Face Recognition - Response{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-11">
+            <h1>Face recognition example</h1>
+            <br />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-11">
+            {% if resultCode == 'NoFace' %}
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading"><span class="glyphicon glyphicon-warning-sign"
+                        aria-hidden="true"></span>&nbsp;No Face</h4>
+                <p>We haven't been able to recognize a face in the image you uploaded. Please, upload an image that
+                    contains one face.</p>
+            </div>
+            {% elif resultCode == 'MultipleFace' %}
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading"><span class="glyphicon glyphicon-warning-sign"
+                        aria-hidden="true"></span>&nbsp;Multiple Faces</h4>
+                <p>We recognized more than one face in the image you uploaded. Please, upload an image that contains one
+                    face only.</p>
+            </div>
+            {% elif resultCode == 'Duplicated' %}
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading"><span class="glyphicon glyphicon-warning-sign"
+                        aria-hidden="true"></span>&nbsp;Duplicated Face</h4>
+                <p>The uploaded image contains a face that we had already registered. Please, upload an image with a new
+                    face.</p>
+            </div>
+            {% else %}
+            <div class="alert alert-success" role="alert">
+                <h4 class="alert-heading">Face Registered</h4>
+                <p>We have successfully registered your username and face.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-offset-1 col-sm-11">
+           <a href="/"><h4 class="btn btn-primary">Register another face</h4></a>
+        </div>
+    </div>
+</div>
+{% endblock %}

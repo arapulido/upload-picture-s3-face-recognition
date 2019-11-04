@@ -72,8 +72,19 @@ def index():
                 application.logger.error("Error uploading %s file to %s bucket", file.filename, application.config['S3_BUCKET'])
                 return "Error uploading to S3"
 
-            return requests.post(application.config['FACE_DETECTION_ENDPOINT'],
+            response = requests.post(application.config['FACE_DETECTION_ENDPOINT'],
                 data=json.dumps(data)).content
+
+            response_dict = json.loads(response)
+
+            code = 'Registered'
+            image = ''
+
+            if 'RekognitionCode' in response_dict:
+                code = response_dict['RekognitionCode']
+                image = response_dict['ImageName']
+
+            return render_template("response.html", resultCode=code, imageName=image)
     else:
         return render_template("index.html")
 
