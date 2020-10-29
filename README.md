@@ -24,7 +24,7 @@ pip install -r requirements.txt
  |`SECRET_KEY`|The Flask secret key||
  |`S3_BUCKET`|The name of the bucket to upload the image to|
  |`S3_KEY`|An AWS key with permissions to upload items to the S3 bucket|
- |`S3_SECRET`|The key secret for `S3_KEY`|
+ |`S3_SECRET_ACCESS_KEY`|The key secret for `S3_KEY`|
  |`FACE_DETECTION_ENDPOINT`|The URL that will call the Face Detection function|
 
 * Run the application:
