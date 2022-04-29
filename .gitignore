@@ -103,5 +103,6 @@ ENV/
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
+.ebextensions/env.config
+
 !.elasticbeanstalk/*.global.yml
-.ebextensions/
